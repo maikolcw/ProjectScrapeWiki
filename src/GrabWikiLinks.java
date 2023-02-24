@@ -15,22 +15,23 @@ import java.util.HashMap;
 /**
  * This class utilizes the jsoup library to help with extracting URLs from a URL link. The program accepts a Wikipedia
  * link and throws an error if the link is not a valid Wikipedia link(check isProperWikiLink method for more details).
- * This program accepts a valid integer between one and twenty called n. The program will then scrape the link
+ * The program will not crash, but instead show the error message and prompt the user for a proper Wikipedia link again.
+ * This program gracefully accepts a valid integer, n, between one and twenty. The program will then scrape the link
  * provided of all Wikipedia links embedded in the page and store them in a HashMap that has the link as a key and an
  * integer as the value for number of occurrences. The program will then repeat the steps of scraping Wikipedia links
- * for all the newly found links and store them in the HashMap n times. The code is optimized to not visit any links
- * already visited and the results are printed to console and a JSON file.
+ * for all the newly found links and store them in the HashMap for n times. The code is optimized to not visit any links
+ * already visited and the results are printed to console and a CSV file.
  */
 public class GrabWikiLinks {
 
     /**
-     * Stores a list of Wikipedia links with their number of times occurrence. This HashMap will be the main data
+     * Stores a list of Wikipedia links with their number of occurrences. This HashMap will be the main data
      * structure the program will use to cycle through the Wikipedia links.
      */
     static HashMap<String, Integer> currentListOfFoundLinks = new HashMap<String, Integer>();
 
     /**
-     * A HashMap that temporarily stores the extracted Wikipedia links from a link in currentListOfFoundLinks to used
+     * A HashMap that temporarily stores the extracted Wikipedia links from a link in currentListOfFoundLinks to be used
      * in the next cycle of currentListOfFoundLinks.
      */
     static HashMap<String, Integer> nextListOfFoundLinks = new HashMap<String, Integer>();
@@ -117,7 +118,8 @@ public class GrabWikiLinks {
     }
 
     /**
-     * Converts HashMap listOfLinksVisited to a CSV file with PrintWriter.
+     * Converts HashMap listOfLinksVisited to a CSV file with PrintWriter. Data is stored in a file called
+     * WikipediaLinks.csv under the root folder of the project.
      */
     private static void convertHashMapToCSVFile() {
         System.out.println("Converting HashMap to csv file");
