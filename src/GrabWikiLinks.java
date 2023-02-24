@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 public class GrabWikiLinks {
 
+    static HashMap<String, Integer> listOfLinks = new HashMap<String, Integer>();
+
     /**
      * Checks if url is a proper Wikipedia Link. This is assuming a proper Wikipedia link requirement starts
      * with 'https://' only, followed by 2-3 letters for region, followed by wikipedia.org/wiki/, and none or any
@@ -25,6 +27,21 @@ public class GrabWikiLinks {
     }
 
     /**
+     * Helper function that takes in a list of <a> elements, extracts the href link from each <a> element, checks
+     * the href link is a proper Wikipedia link, and adds the Wikipedia link to the HashMap listOflInks.
+     * @param elts
+     */
+    private static void addLinksToListOfLinks(Elements elts) {
+        for (Element elt : elts)
+        {
+            String hrefValue = elt.attr("href");
+            if (isProperWikiLink(hrefValue)) {
+                listOfLinks.merge(hrefValue, 1, Integer::sum);
+            }
+        }
+    }
+
+    /**
      * Drives the program
      * @param args not used
      */
@@ -33,25 +50,16 @@ public class GrabWikiLinks {
         final String url = "https://en.wikipedia.org/wiki/Kitten";
         int uniqueCount = 0;
         int totalCount = 0;
-        HashMap<String, Integer> listOfLinks = new HashMap<String, Integer>();
+
 
 
         try {
-//            System.out.println(isProperWikiLink(url));
             final Document document = Jsoup.connect(url).get();
-//            System.out.println(document.outerHtml());
             Elements elts = document.select("a");
-            for (Element elt : elts)
-            {
-                String hrefValue = elt.attr("href");
-                if (isProperWikiLink(hrefValue)) {
-                    listOfLinks.merge(hrefValue, 1, Integer::sum);
-                }
-            }
+            addLinksToListOfLinks(elts);
             System.out.println(listOfLinks);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 }
