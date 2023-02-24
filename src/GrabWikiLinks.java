@@ -187,7 +187,7 @@ public class GrabWikiLinks {
             }
             System.out.println("Beginning link extraction (higher n will take longer)...");
             Document document = Jsoup.connect(wikipediaLink).get();
-            listOfLinksVisited.put(wikipediaLink, 1);
+            listOfLinksVisited.put(wikipediaLink, 0);
             Elements elts = document.select("a");
             addLinksToCurrentListOfFoundLinks(elts);
             cycleThroughCurrentListOfFoundLinksAndCheckIfVisitedIfNotScrapeLinks(n);
