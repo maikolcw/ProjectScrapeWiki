@@ -195,7 +195,11 @@ public class GrabWikiLinks {
             myScanner.close();
             convertHashMapToCSVFile();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            if (ex.getMessage() == null) {
+                System.out.println("Wrong input, restarting...");
+            } else {
+                System.out.println(ex.getMessage());
+            }
             startGrabWikiLinks();
         }
     }
