@@ -117,6 +117,23 @@ public class GrabWikiLinks {
     }
 
     /**
+     * Converts HashMap listOfLinksVisited to a CSV file with PrintWriter.
+     */
+    private static void convertHashMapToCSVFile() {
+        System.out.println("Converting HashMap to csv file");
+        File csvFile = new File("WikipediaLinks.csv");
+        try {
+            PrintWriter out = new PrintWriter(csvFile);
+            for (Map.Entry<String,Integer> entry : listOfLinksVisited.entrySet()) {
+                out.printf("%s, %d\n", entry.getKey(), entry.getValue());
+            }
+            out.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    /**
      * Helper function to print information in a user-friendly way on extracted Wikipedia Links from HashMap
      * listOfLinksVisited. Prints out the total number of links found, number of unique links, and all visited links
      * with their number of occurrences.
@@ -162,6 +179,7 @@ public class GrabWikiLinks {
             cycleThroughCurrentListOfFoundLinksAndCheckIfVisitedIfNotScrapeLinks(n);
             printBeautifully();
             myScanner.close();
+            convertHashMapToCSVFile();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             startGrabWikiLinks();
@@ -175,15 +193,6 @@ public class GrabWikiLinks {
     public static void main(String[] args) {
         System.out.println("Program is starting...");
         startGrabWikiLinks();
-        File csvFile = new File("WikipediaLinks.csv");
-        try {
-            PrintWriter out = new PrintWriter(csvFile);
-            for (Map.Entry<String,Integer> entry : listOfLinksVisited.entrySet()) {
-                out.printf("%s, %d\n", entry.getKey(), entry.getValue());
-            }
-            out.close();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        System.out.println("Program has ended");
     }
 }
