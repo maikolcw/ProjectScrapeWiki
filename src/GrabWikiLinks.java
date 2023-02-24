@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +12,11 @@ import java.util.HashMap;
 
 public class GrabWikiLinks {
 
+    /**
+     * Stores a list of Wikipedia links with their number of times occurrence.
+     */
     static HashMap<String, Integer> listOfLinks = new HashMap<String, Integer>();
+
 
     /**
      * Checks if url is a proper Wikipedia Link. This is assuming a proper Wikipedia link requirement starts
@@ -41,6 +46,18 @@ public class GrabWikiLinks {
         }
     }
 
+    private static void printBeautifully() {
+        Integer totalCount = 0;
+        Integer uniqueCount = listOfLinks.size();
+        for (Map.Entry<String,Integer> entry : listOfLinks.entrySet()) {
+            System.out.println("Link: " + entry.getKey() + "\t" +
+                    "| Number of occurrences: " + entry.getValue());
+            totalCount = totalCount + entry.getValue();
+        }
+        System.out.println("Total number of counts: " + totalCount);
+        System.out.println("Number of unique counts: " + uniqueCount);
+    }
+
     /**
      * Drives the program
      * @param args not used
@@ -51,13 +68,12 @@ public class GrabWikiLinks {
         int uniqueCount = 0;
         int totalCount = 0;
 
-
-
         try {
             final Document document = Jsoup.connect(url).get();
             Elements elts = document.select("a");
             addLinksToListOfLinks(elts);
-            System.out.println(listOfLinks);
+            addLinksToListOfLinks(elts);
+            printBeautifully();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
