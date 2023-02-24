@@ -2,6 +2,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +12,15 @@ import java.util.Scanner;
 
 import java.util.HashMap;
 
+/**
+ * This class utilizes the jsoup library to help with extracting URLs from a URL link. The program accepts a Wikipedia
+ * link and throws an error if the link is not a valid Wikipedia link(check isProperWikiLink method for more details).
+ * This program accepts a valid integer between one and twenty called n. The program will then scrape the link
+ * provided of all Wikipedia links embedded in the page and store them in a HashMap that has the link as a key and an
+ * integer as the value for number of occurrences. The program will then repeat the steps of scraping Wikipedia links
+ * for all the newly found links and store them in the HashMap n times. The code is optimized to not visit any links
+ * already visited and the results are printed to console and a JSON file.
+ */
 public class GrabWikiLinks {
 
     /**
@@ -32,12 +44,12 @@ public class GrabWikiLinks {
     /**
      * Checks if url is a proper Wikipedia Link. This is assuming a proper Wikipedia link requirement starts
      * with 'https://' only, followed by 2-3 letters for region, followed by wikipedia.org/wiki/, and none or any
-     * character afterwards
+     * alphanumeric characters afterwards.
      * @param url String
      * @return boolean
      */
     private static boolean isProperWikiLink(String url) {
-        Pattern pattern = Pattern.compile("^https://[a-z]{2,3}\\.wikipedia.org/wiki/\\w*$");
+        Pattern pattern = Pattern.compile("^https://[a-z]{2,3}\\.wikipedia.org/wiki/[^%]*$");
         Matcher matcher = pattern.matcher(url);
         return matcher.find();
     }
@@ -149,6 +161,7 @@ public class GrabWikiLinks {
             addLinksToCurrentListOfFoundLinks(elts);
             cycleThroughCurrentListOfFoundLinksAndCheckIfVisitedIfNotScrapeLinks(n);
             printBeautifully();
+            myScanner.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             startGrabWikiLinks();
@@ -162,5 +175,15 @@ public class GrabWikiLinks {
     public static void main(String[] args) {
         System.out.println("Program is starting...");
         startGrabWikiLinks();
+        File csvFile = new File("WikipediaLinks.csv");
+        try {
+            PrintWriter out = new PrintWriter(csvFile);
+            for (Map.Entry<String,Integer> entry : listOfLinksVisited.entrySet()) {
+                out.printf("%s, %d\n", entry.getKey(), entry.getValue());
+            }
+            out.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
