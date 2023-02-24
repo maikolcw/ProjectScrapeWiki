@@ -57,7 +57,7 @@ public class GrabWikiLinks {
      * @return boolean
      */
     private static boolean isProperWikiLink(String url) {
-        Pattern pattern = Pattern.compile("^https://[a-z]{2,3}\\.wikipedia.org/wiki/[^%]*$");
+        Pattern pattern = Pattern.compile("^https://[a-z]{2,3}\\.wikipedia.org/wiki/.*$");
         Matcher matcher = pattern.matcher(url);
         return matcher.find();
     }
