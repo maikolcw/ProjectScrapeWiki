@@ -1,5 +1,6 @@
 # ProjectScrapeWiki
-This project accepts a wikipedia link to scrape and return all proper wikipedia links via n iterations, chosen by user.\\
+This project accepts a wikipedia link to scrape and return all proper wikipedia links via n iterations, chosen by user.\
+\
 This program utilizes the jsoup library to help with extracting URLs from a URL link. The program accepts a Wikipedia
 link and throws an error if the link is not a valid Wikipedia link(check isProperWikiLink method for more details).
 The program will not crash, but instead show the error message and prompt the user for a proper Wikipedia link again.
